@@ -1,6 +1,6 @@
-SOURCE_URL=url of app's source
-SOURCE_SUM=sha256 checksum
+SOURCE_URL=http://download.jboss.org/wildfly/13.0.0.Final/wildfly-13.0.0.Final.zip
+SOURCE_SUM=4380149be31e0f1f47668a507ef7feafecec5b3c24cfe8c5e90816cc5b1b1470 
 SOURCE_SUM_PRG=sha256sum
-SOURCE_FORMAT=tar.gz
+SOURCE_FORMAT=zip
 SOURCE_IN_SUBDIR=true
 SOURCE_FILENAME=
