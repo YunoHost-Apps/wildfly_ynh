@@ -17,11 +17,9 @@ app=$YNH_APP_INSTANCE_NAME
 
 domain=$(ynh_app_setting_get $app domain)
 path_url=$(ynh_app_setting_get $app path)
-admin=$(ynh_app_setting_get $app admin)
 is_public=$(ynh_app_setting_get $app is_public)
 final_path=$(ynh_app_setting_get $app final_path)
 port=$(ynh_app_setting_get $app port)
-db_name=$(ynh_app_setting_get $app db_name)
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
@@ -71,11 +69,7 @@ path_url=$(ynh_normalize_url_path $path_url)
 #=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
-# DOWNLOAD, CHECK AND UNPACK SOURCE
-#=================================================
 
-# Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source "$final_path"
 
 #=================================================
 # NGINX CONFIGURATION
@@ -91,30 +85,19 @@ ynh_add_nginx_config
 # Create a system user
 ynh_system_user_create $app
 
-#=================================================
-# PHP-FPM CONFIGURATION
-#=================================================
-
-# Create a dedicated php-fpm config
-ynh_add_fpm_config
 
 #=================================================
 # SPECIFIC UPGRADE
 #=================================================
-# ...
+# MODIFY A CONFIG FILE
 #=================================================
+cp ../conf/jboss-cli.xml "$final_path/bin/jboss-cli.xml"
+ynh_replace_string "__PORT__" "$port" "$final_path/bin/jboss-cli.xml"
 
 # Verify the checksum and backup the file if it's different
-ynh_backup_if_checksum_is_different "$final_path/CONFIG_FILE"
+ynh_backup_if_checksum_is_different "$final_path/bin/jboss-cli.xml"
 # Recalculate and store the config file checksum into the app settings
-ynh_store_file_checksum "$final_path/CONFIG_FILE"
-
-#=================================================
-# SETUP LOGROTATE
-#=================================================
-
-# Use logrotate to manage app-specific logfile(s)
-ynh_use_logrotate --non-append
+ynh_store_file_checksum "$final_path/bin/jboss-cli.xml"
 
 #=================================================
 # SETUP SYSTEMD
@@ -123,14 +106,17 @@ ynh_use_logrotate --non-append
 # Create a dedicated systemd config
 ynh_add_systemd_config
 
+# Add service YunoHost
+yunohost service add $app
+
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
 # SECURE FILES AND DIRECTORIES
 #=================================================
 
-# Set right permissions for curl installation
-chown -R root: $final_path
+# Set right permissions 
+chown -R $app: $final_path
 
 #=================================================
 # SETUP SSOWAT
@@ -150,5 +136,8 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-
 systemctl reload nginx
+systemctl daemon-reload
+systemctl start $app
+systemctl enable $app
+sleep 30
