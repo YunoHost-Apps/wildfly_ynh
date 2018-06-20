@@ -109,6 +109,9 @@ ynh_system_user_create $app
 # Create a dedicated systemd config
 ynh_add_systemd_config
 
+# Add service YunoHost
+yunohost service add $app
+
 #=================================================
 # SETUP APPLICATION WITH CURL
 #=================================================
@@ -147,5 +150,9 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-
 systemctl reload nginx
+systemctl daemon-reload
+systemctl start $app
+systemctl enable $app
+sleep 30
+
