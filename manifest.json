@@ -5,7 +5,7 @@
     "description": {
         "en": "Wildfly package for YunoHost"
     },
-    "version": "1.0",
+    "version": "14.0.1",
     "url": "http://wildfly.org",
     "license": "LGPL 2.1",
     "maintainer": {

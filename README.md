@@ -4,7 +4,7 @@
 
 [![Install wildfly with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=wildfly)<br><br>
 =======
-**Shipped Version: 13.0.0.Final**
+**Shipped Version: 14.0.1.Final**
 
 **Requirement: YunoHost 3.0.0**
 

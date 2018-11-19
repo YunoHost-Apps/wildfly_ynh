@@ -55,8 +55,15 @@ ynh_restore_file "/etc/nginx/conf.d/$domain.d/$app.conf"
 
 ynh_restore_file "$final_path"
 
-# Open this port
-yunohost firewall allow --no-upnp TCP $port 2>&1
+#=================================================
+# CLOSE A PORT
+#=================================================
+
+if yunohost firewall list | grep -q "\- $port$"
+then
+	echo "Close port $port"
+	yunohost firewall disallow TCP $port 2>&1
+fi
 
 #=================================================
 # RECREATE THE DEDICATED USER
