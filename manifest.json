@@ -3,7 +3,7 @@
     "id": "wildfly",
     "packaging_format": 1,
     "description": {
-        "en": "Wildfly package for YunoHost"
+        "en": "A flexible, lightweight, managed application runtime that helps you build amazing applications."
     },
     "version": "14.0.1",
     "url": "http://wildfly.org",
